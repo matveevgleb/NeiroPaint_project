@@ -1,20 +1,7 @@
-/*
- *    Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
+
 
 package com.mindorks.tensorflowexample;
+
 
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -36,15 +23,15 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
+public class Paint extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener {
     TextView textView;
     List<String> pictures;
     private TextView textView2;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "Paint";
     Boolean a = true;
 
-    private static final int PIXEL_WIDTH = 500;
-    private static final int PIXEL_HEIGHT = 300;
+    private static final int PIXEL_WIDTH = 28;
+    private static final int PIXEL_HEIGHT = 28;
 
     private TextView mResultText;
 
@@ -55,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private DrawModel mModel;
     private DrawView mDrawView;
 
-    private View detectButton;
+
+
 
     private PointF mTmpPoint = new PointF();
 
@@ -83,13 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mDrawView.setModel(mModel);
         mDrawView.setOnTouchListener(this);
 
-        detectButton = findViewById(R.id.buttonDetect);
-        detectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onDetectClicked();
-            }
-        });
+
 
         View clearButton = findViewById(R.id.buttonClear);
         clearButton.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                detectButton.setVisibility(View.VISIBLE);
+
             }
         });
     }
@@ -228,9 +210,26 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             public void onTick(long millisUntilFinished) {
                 textView2.setText("         "
                         + millisUntilFinished / 1000+"       ");
+                float pixels[] = mDrawView.getPixelData();
+
+                final List<Classifier.Recognition> results = classifier.recognizeImage(pixels);
+
+              if (results.size() > 0) {
+                  String value = results.get(0).getTitle();
+                  mResultText.setText(value);
+
+
+
+
+              }
             }
             public void onFinish() {
                 textView2.setText("");
+                mModel.clear();
+                mDrawView.reset();
+                mDrawView.invalidate();
+
+                mResultText.setText("");
             }
         }
                 .start();
@@ -254,26 +253,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         pictures.add("8");
         pictures.add("9");
         pictures.add("10");
-        pictures.add("11");
-        pictures.add("12");
-        pictures.add("13");
-        pictures.add("14");
-        pictures.add("15");
-        pictures.add("16");
-        pictures.add("17");
-        pictures.add("18");
-        pictures.add("19");
-        pictures.add("20");
-        pictures.add("21");
-        pictures.add("22");
-        pictures.add("23");
-        pictures.add("24");
-        pictures.add("25");
-        pictures.add("26");
-        pictures.add("27");
-        pictures.add("28");
-        pictures.add("29");
-        pictures.add("30");
 
 
         Collections.shuffle(pictures);
@@ -287,70 +266,40 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         if (a) {
             String current = pictures.get(0);
             if (current.equals("1")) {
-                textView.setText("  Happy Smile");
+                textView.setText("0");
             }  if (current.equals("2")) {
-                textView.setText("  Sad Smile");
+                textView.setText("1");
             }  if (current.equals("3")) {
-                textView.setText("  Wi - Fi");
+                textView.setText("2");
             }  if (current.equals("4")) {
-                textView.setText("  Smartphone");
+                textView.setText("3");
             }  if (current.equals("5")) {
-                textView.setText("  Hockey stick");
+                textView.setText("4");
             }  if (current.equals("6")) {
-                textView.setText("  Flower");
+                textView.setText("5");
             }  if (current.equals("7")) {
-                textView.setText("  Remote Controller");
+                textView.setText("6");
             }  if (current.equals("8")) {
-                textView.setText("  Ice Cream");
+                textView.setText("7");
             }  if (current.equals("9")) {
-                textView.setText("  Pizza");
-            }  if (current.equals("10")) {
-                textView.setText("  Lion");
-            }  if (current.equals("11")) {
-                textView.setText("  Sun");
-            }  if (current.equals("12")) {
-                textView.setText("  Knife");
-            }  if (current.equals("13")) {
-                textView.setText("  Cat");
-            }  if (current.equals("14")) {
-                textView.setText("  Fish");
-            }  if (current.equals("15")) {
-                textView.setText("  Door");
-            }  if (current.equals("16")) {
-                textView.setText("  Train");
-            }  if (current.equals("17")) {
-                textView.setText("  Ping - Pong Racket");
-            }  if (current.equals("18")) {
-                textView.setText("  Snowman");
-            }  if (current.equals("19")) {
-                textView.setText("  Palm");
-            }  if (current.equals("20")) {
-                textView.setText("  Donut");
-            } if (current.equals("21")) {
-                textView.setText("  Car");
-            }if (current.equals("22")) {
-                textView.setText("  Ball");
-            } if (current.equals("23")) {
-                textView.setText("  Ship");
-            }  if (current.equals("24")) {
-                textView.setText("  Banana");
-            } if (current.equals("25")) {
-                textView.setText("  TV");
-            } if (current.equals("26")) {
-                textView.setText("  Plane");
-            } if (current.equals("27")) {
-                textView.setText("  House");
-            } if (current.equals("28")) {
-                textView.setText("  Jail");
-            } if (current.equals("29")) {
-                textView.setText("  Broom");
-            } if (current.equals("30")) {
-                textView.setText("  Trousers");
+                textView.setText("8");  }  if (current.equals("10")) {
+                textView.setText("9");
+
+
+            }
+            }
+
+            }
+
 
                 //спользуется рандомное слово в array list, но по нажатию на text view. ужно сделать, что бы каждые 10 сек слово менялось
             }
-        }
-    }
 
-}
+
+
+
+
+
+
+
 
